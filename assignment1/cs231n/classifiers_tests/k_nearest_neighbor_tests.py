@@ -3,12 +3,17 @@ import sys
 import os
 
 path_to_this_file = os.path.dirname(os.path.abspath(__file__))
-path_to_cs231n = path_to_this_file + "\\..\\.."
-path_to_datasets = path_to_cs231n + "\\cs231n"
-path_to_cifar10 =  path_to_datasets + "\\datasets\\cifar-10-batches-py"
+path_to_cs231n = path_to_this_file  + "/../.."
+path_to_datasets = path_to_cs231n + "/cs231n"
+path_to_cifar10 =  path_to_datasets + "/datasets/cifar-10-batches-py"
 
-sys.path.append(path_to_cs231n)
-sys.path.append(path_to_datasets)
+# Make these paths work on both Windows and OSX.
+norm_path_to_datasets = os.path.normpath(path_to_datasets)
+norm_path_to_cs231n = os.path.normpath(path_to_cs231n)
+norm_path_to_cifar10 = os.path.normpath(path_to_cifar10)
+
+sys.path.append(norm_path_to_cs231n)
+sys.path.append(norm_path_to_datasets)
 
 # for p in sys.path:
 #     print(p)
@@ -24,7 +29,7 @@ except:
    pass
 
 # Load the raw CIFAR-10 data.
-X_train, y_train, X_test, y_test = load_CIFAR10(path_to_cifar10)
+X_train, y_train, X_test, y_test = load_CIFAR10(norm_path_to_cifar10)
 
 # Subsample the data for more efficient code execution in this exercise
 num_training = 500
@@ -42,18 +47,18 @@ X_train = np.reshape(X_train, (X_train.shape[0], -1))
 X_test = np.reshape(X_test, (X_test.shape[0], -1))
 print(X_train.shape, X_test.shape)
 
+# Create a kNN classifier instance. 
+# Remember that training a kNN classifier is a noop: 
+# the Classifier simply remembers the data and does no further processing 
+from cs231n.classifiers import KNearestNeighbor
+classifier = KNearestNeighbor()
+classifier.train(X_train, y_train)
 
+# Open cs231n/classifiers/k_nearest_neighbor.py and implement
+# compute_distances_two_loops.
 
-
-
-
-print("X_train[1]")
-print(X_train[1])
-
-
-print("X_train.size")
-print(X_train.size)
-
-
+# Test your implementation:
+dists = classifier.compute_distances_two_loops(X_test)
+print(dists.shape)
 
 print('Done.')
