@@ -61,4 +61,15 @@ classifier.train(X_train, y_train)
 dists = classifier.compute_distances_two_loops(X_test)
 print(dists.shape)
 
+
+# Now implement the function predict_labels and run the code below:
+# We use k = 1 (which is Nearest Neighbor).
+y_test_pred = classifier.predict_labels(dists, k=5)
+
+# Compute and print the fraction of correctly predicted examples
+num_correct = np.sum(y_test_pred == y_test)
+accuracy = float(num_correct) / num_test
+print('Got %d / %d correct => accuracy: %f' % (num_correct, num_test, accuracy))
+
+
 print('Done.')

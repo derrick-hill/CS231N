@@ -1,4 +1,5 @@
 import numpy as np
+import scipy as sp
 
 class KNearestNeighbor(object):
   """ a kNN classifier with L2 distance """
@@ -142,12 +143,22 @@ class KNearestNeighbor(object):
     - y: A numpy array of shape (num_test,) containing predicted labels for the
       test data, where y[i] is the predicted label for the test point X[i].  
     """
+    from scipy import stats
+
     num_test = dists.shape[0]
     y_pred = np.zeros(num_test)
     for i in range(num_test):
       # A list of length k storing the labels of the k nearest neighbors to
       # the ith test point.
+
+      # There are two implementations here.  One I did.  The other was done by a guy in the study group.  
+      # I'm using them to check each other. I've commented out the study group one.
+      # For some reason that I don't understand, the performance of this algorithm is significantly
+      # worse for K=5 than it is for K=1.
+      
       closest_y = []
+      # closest_y_2 = []
+
       #########################################################################
       # TODO:                                                                 #
       # Use the distance matrix to find the k nearest neighbors of the ith    #
@@ -155,7 +166,16 @@ class KNearestNeighbor(object):
       # neighbors. Store these labels in closest_y.                           #
       # Hint: Look up the function numpy.argsort.                             #
       #########################################################################
-      pass
+      sorted = np.argsort(dists[i])
+      closest_y =  sorted[:k]
+      candidate_labels = self.y_train[closest_y]
+
+      #closest_y_2 = np.argsort(dists[i])[:k]
+
+      # this_works = np.array_equal(closest_y, closest_y_2)
+      # assert(this_works)
+
+
       #########################################################################
       # TODO:                                                                 #
       # Now that you have found the labels of the k nearest neighbors, you    #
@@ -163,7 +183,13 @@ class KNearestNeighbor(object):
       # Store this label in y_pred[i]. Break ties by choosing the smaller     #
       # label.                                                                #
       #########################################################################
-      pass
+      most_common_label = sp.stats.mode(candidate_labels)
+      y_pred[i] = most_common_label[0][0]
+
+      #alternative_label = np.bincount(self.y_train[closest_y_2]).argmax()
+
+      #assert ( alternative_label == y_pred[i])
+
       #########################################################################
       #                           END OF YOUR CODE                            # 
       #########################################################################
