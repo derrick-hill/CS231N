@@ -150,14 +150,7 @@ class KNearestNeighbor(object):
     for i in range(num_test):
       # A list of length k storing the labels of the k nearest neighbors to
       # the ith test point.
-
-      # There are two implementations here.  One I did.  The other was done by a guy in the study group.  
-      # I'm using them to check each other. I've commented out the study group one.
-      # For some reason that I don't understand, the performance of this algorithm is significantly
-      # worse for K=5 than it is for K=1.
-      
       closest_y = []
-      # closest_y_2 = []
 
       #########################################################################
       # TODO:                                                                 #
@@ -170,12 +163,6 @@ class KNearestNeighbor(object):
       closest_y =  sorted[:k]
       candidate_labels = self.y_train[closest_y]
 
-      #closest_y_2 = np.argsort(dists[i])[:k]
-
-      # this_works = np.array_equal(closest_y, closest_y_2)
-      # assert(this_works)
-
-
       #########################################################################
       # TODO:                                                                 #
       # Now that you have found the labels of the k nearest neighbors, you    #
@@ -185,10 +172,6 @@ class KNearestNeighbor(object):
       #########################################################################
       most_common_label = sp.stats.mode(candidate_labels)
       y_pred[i] = most_common_label[0][0]
-
-      #alternative_label = np.bincount(self.y_train[closest_y_2]).argmax()
-
-      #assert ( alternative_label == y_pred[i])
 
       #########################################################################
       #                           END OF YOUR CODE                            # 
